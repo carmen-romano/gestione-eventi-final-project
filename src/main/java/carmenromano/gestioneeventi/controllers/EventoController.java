@@ -3,6 +3,7 @@ import carmenromano.gestioneeventi.entities.Evento;
 import carmenromano.gestioneeventi.entities.Utente;
 import carmenromano.gestioneeventi.exceptions.BadRequestException;
 import carmenromano.gestioneeventi.payloads.EventoPayload;
+import carmenromano.gestioneeventi.payloads.PrenotazioneResponsePayload;
 import carmenromano.gestioneeventi.services.EventoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +49,14 @@ public class EventoController {
     public void deleteEvent(@PathVariable int eventoId) {
         eventoService.findByIdAndDelete(eventoId);
     }
+    @PostMapping("/me/prenota/{eventoId}")
+    public PrenotazioneResponsePayload prenotaEvento(@PathVariable int eventoId, @AuthenticationPrincipal Utente currentAuthenticatedUser) {
+        try {
+            eventoService.prenotaEvento(eventoId, currentAuthenticatedUser);
+            return new PrenotazioneResponsePayload("Prenotazione effettuata con successo per l'evento con Id:" + eventoId);
+        } catch (RuntimeException e) {
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
 }

@@ -49,8 +49,13 @@ public class EventoService {
 
     public void prenotaEvento(int eventoId, Utente utente) {
         Evento evento = findById(eventoId);
-        if (evento.getPartecipanti().contains(utente)) {
-            throw new RuntimeException("Hai già una prenotazione per questo evento");
+
+
+        int utenteId = utente.getId();
+        for (Utente partecipante : evento.getPartecipanti()) {
+            if (partecipante.getId() == utenteId) {
+                throw new RuntimeException("Hai già una prenotazione per questo evento");
+            }
         }
         if (evento.getPostiDisponibili() <= 0) {
             throw new RuntimeException("Non ci sono posti disponibili per questo evento");
@@ -60,4 +65,5 @@ public class EventoService {
         evento.setPostiDisponibili(evento.getPostiDisponibili() - 1);
         eventoRepository.save(evento);
     }
+
 }

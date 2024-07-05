@@ -45,14 +45,5 @@ public class UtenteController {
 
     }
 
-    @PostMapping("/me/prenota/{eventoId}")
-    public PrenotazioneResponsePayload prenotaEvento(@PathVariable int eventoId, @AuthenticationPrincipal Utente currentAuthenticatedUser) {
-        try {
-            eventoService.prenotaEvento(eventoId, currentAuthenticatedUser);
-            return new PrenotazioneResponsePayload("Prenotazione effettuata con successo.");
-        } catch (RuntimeException e) {
-            throw new BadRequestException(e.getMessage());
-        }
-    }
 }
 
