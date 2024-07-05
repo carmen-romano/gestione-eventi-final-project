@@ -42,6 +42,12 @@ public class EventoController {
         return eventoService.save(body, currentAuthenticatedUser);
     }
 
+    @PutMapping("/{eventoId}")
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    public Evento findByIdAndUpdate(@PathVariable int deviceId, @RequestBody Evento body) {
+        return eventoService.findByIdAndUpdate(deviceId, body);
+    }
+
 
     @DeleteMapping("/{eventoId}")
     @PreAuthorize("hasAuthority('ORGANIZZATORE')")
@@ -49,6 +55,8 @@ public class EventoController {
     public void deleteEvent(@PathVariable int eventoId) {
         eventoService.findByIdAndDelete(eventoId);
     }
+
+
     @PostMapping("/me/prenota/{eventoId}")
     public PrenotazioneResponsePayload prenotaEvento(@PathVariable int eventoId, @AuthenticationPrincipal Utente currentAuthenticatedUser) {
         try {

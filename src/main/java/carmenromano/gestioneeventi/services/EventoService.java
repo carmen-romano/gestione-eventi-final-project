@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -45,6 +46,20 @@ public class EventoService {
     public void findByIdAndDelete(int id) {
         Evento found = this.findById(id);
         eventoRepository.delete(found);
+    }
+    public Evento findByIdAndUpdate(int id, Evento body) {
+        Optional<Evento> eventOptional = eventoRepository.findById(id);
+        if (eventOptional.isPresent()) {
+            Evento found = eventOptional.get();
+            found.setTitolo(body.getTitolo());
+            found.setDescrizione(body.getDescrizione());
+            found.setData(body.getData());
+            found.setLuogo(body.getLuogo());
+            found.setPostiDisponibili(body.getPostiDisponibili());
+            return eventoRepository.save(found);
+        } else {
+            throw new NotFoundException(id);
+        }
     }
 
     public void prenotaEvento(int eventoId, Utente utente) {
