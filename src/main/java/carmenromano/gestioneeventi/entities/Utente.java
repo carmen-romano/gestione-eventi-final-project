@@ -1,6 +1,7 @@
 package carmenromano.gestioneeventi.entities;
 
 import carmenromano.gestioneeventi.enums.RoleType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,11 +20,12 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"sort","numberOfElements","first", "last","password", "roleType", "authorities", "enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked"})
 @Table(name = "utenti")
 public class Utente implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(nullable = false)
     private String nome;
@@ -37,14 +39,12 @@ public class Utente implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "ruolo_utente")
     private RoleType type;
 
     @ManyToMany(mappedBy = "partecipanti")
     private Set<Evento> eventiPartecipati = new HashSet<>();
-
 
     public Utente(String nome, String cognome, String email, String password, RoleType type) {
         this.nome = nome;
@@ -61,7 +61,7 @@ public class Utente implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return this.email;
     }
 
     @Override
