@@ -44,8 +44,8 @@ public class EventoController {
 
     @PutMapping("/{eventoId}")
     @PreAuthorize("hasAuthority('ORGANIZZATORE')")
-    public Evento findByIdAndUpdate(@PathVariable int deviceId, @RequestBody Evento body) {
-        return eventoService.findByIdAndUpdate(deviceId, body);
+    public Evento findByIdAndUpdate(@PathVariable int eventoId, @RequestBody Evento body) {
+        return eventoService.findByIdAndUpdate(eventoId, body);
     }
 
 
